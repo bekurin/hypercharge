@@ -1,11 +1,11 @@
-package com.brawl.stars.hypercharge
+package com.brawl.stars.hypercharge.batch
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class HyperchargeApplication
+class HyperchargeBatchApplication
 
 fun main(args: Array<String>) {
-	runApplication<HyperchargeApplication>(*args)
+	runApplication<HyperchargeBatchApplication>(*args)
 }
