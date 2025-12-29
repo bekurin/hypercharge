@@ -17,10 +17,12 @@ class StatMapCombination(
 ) : BaseEntity() {
 
     @Column(name = "map_id", nullable = false)
-    val mapId: String = mapId
+    var mapId: String = mapId
+        protected set
 
     @Column(name = "brawler_id_list", nullable = false, columnDefinition = "TEXT")
-    val brawlerIdList: String = brawlerIdList
+    var brawlerIdList: String = brawlerIdList
+        protected set
 
     @Column(name = "total_game", nullable = false)
     var totalGame: Long = 0

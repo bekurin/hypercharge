@@ -18,10 +18,12 @@ class StatMapBrawler(
 ) : BaseEntity() {
 
     @Column(name = "map_id", nullable = false)
-    val mapId: String = mapId
+    var mapId: String = mapId
+        protected set
 
     @Column(name = "brawler_id", nullable = false)
-    val brawlerId: String = brawlerId
+    var brawlerId: String = brawlerId
+        protected set
 
     @Column(name = "total_pick", nullable = false)
     var totalPick: Long = 0
