@@ -34,4 +34,4 @@ application-secret.yml
 .DS_Store
 Thumbs.db
 
-.clauderules
+CLAUDE.md

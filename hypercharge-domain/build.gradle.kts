@@ -1,3 +1,4 @@
+import org.gradle.kotlin.dsl.dependencies
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 description = "Hypercharge Domain Module"
@@ -27,6 +28,6 @@ tasks.getByName<Jar>("jar") {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    runtimeOnly("com.mysql:mysql-connector-j")
+    api("org.springframework.boot:spring-boot-starter-data-jpa")
+    api("com.mysql:mysql-connector-j")
 }
