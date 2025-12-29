@@ -1,5 +1,6 @@
 package com.brawl.stars.hypercharge.domain.entity.write
 
+import com.brawl.stars.hypercharge.domain.entity.BaseEntity
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
@@ -14,41 +15,41 @@ import java.time.LocalDateTime
     ]
 )
 class BattleLog(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0,
+    battleTime: LocalDateTime,
+    mapId: String,
+    mode: String,
+    starPlayerTag: String? = null,
+    starPlayerBrawlerId: String? = null,
+    duration: Int? = null
+) : BaseEntity() {
 
     @Column(name = "battle_time", nullable = false)
-    val battleTime: LocalDateTime,
+    var battleTime: LocalDateTime = battleTime
+        protected set
 
     @Column(name = "map_id", nullable = false)
-    val mapId: String,
+    var mapId: String = mapId
+        protected set
 
     @Column(name = "mode", nullable = false)
-    val mode: String,
+    var mode: String = mode
+        protected set
 
     @Column(name = "star_player_tag")
-    val starPlayerTag: String? = null,
+    var starPlayerTag: String? = starPlayerTag
+        protected set
 
     @Column(name = "star_player_brawler_id")
-    val starPlayerBrawlerId: String? = null,
+    var starPlayerBrawlerId: String? = starPlayerBrawlerId
+        protected set
 
     @Column(name = "duration")
-    val duration: Int? = null,
-
-    @Column(name = "created_at", nullable = false, updatable = false)
-    val createdAt: LocalDateTime = LocalDateTime.now(),
-
-    @Column(name = "updated_at", nullable = false)
-    var updatedAt: LocalDateTime = LocalDateTime.now(),
+    var duration: Int? = duration
+        protected set
 
     @OneToMany(mappedBy = "battleLog", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val participants: MutableList<BattleParticipantDetail> = mutableListOf()
-) {
-    @PreUpdate
-    fun onPreUpdate() {
-        updatedAt = LocalDateTime.now()
-    }
+    var participants: MutableList<BattleParticipantDetail> = mutableListOf()
+        protected set
 
     fun addParticipant(participant: BattleParticipantDetail) {
         participants.add(participant)
