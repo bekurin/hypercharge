@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: hypercharge-api
+  profiles:
+    include:
+      - domain
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE
