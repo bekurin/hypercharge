@@ -1,7 +1,7 @@
 package com.brawl.stars.hypercharge.api.controller
 
 import com.brawl.stars.hypercharge.api.dto.response.ApiResponse
-import com.brawl.stars.hypercharge.api.dto.response.MapCombinationResponse
+import com.brawl.stars.hypercharge.api.dto.response.CombinationDto
 import com.brawl.stars.hypercharge.api.service.MapCombinationService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -21,7 +21,7 @@ class MapController(
         @PathVariable mapId: String,
         @RequestParam(defaultValue = "10") minGames: Int,
         @RequestParam(defaultValue = "20") limit: Int
-    ): ResponseEntity<ApiResponse<MapCombinationResponse>> {
+    ): ResponseEntity<ApiResponse<CombinationDto>> {
         val response = mapCombinationService.getMapCombinations(mapId, minGames, limit)
         return ResponseEntity.ok(response)
     }

@@ -14,25 +14,15 @@ class MapCombinationService(
     private val statMapCombinationRepository: StatMapCombinationRepository
 ) {
 
-    companion object {
-        const val DEFAULT_MIN_GAMES = 10
-        const val DEFAULT_LIMIT = 20
-    }
-
     fun getMapCombinations(
         mapId: String,
-        minGames: Int = DEFAULT_MIN_GAMES,
-        limit: Int = DEFAULT_LIMIT
-    ): ApiResponse<MapCombinationResponse> {
+        minGames: Int,
+        limit: Int
+    ): ApiResponse<CombinationDto> {
         val pageable = PageRequest.of(0, limit)
-
         val combinations = statMapCombinationRepository
-            .findTopCombinations(mapId, minGames.toLong(), pageable)
-            .map { CombinationDto.from(it) }
-
-        return ApiResponse(
-            totalCount = combinations.size,
-            data = MapCombinationResponse(combinations = combinations)
-        )
+            .findByMapIdAndTotalGameGreaterThanEqualOrderByWinRateDesc(mapId, minGames.toLong(), pageable)
+            .map { CombinationDto(it) }
+        return ApiResponse(combinations)
     }
 }

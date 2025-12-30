@@ -1,6 +1,7 @@
 package com.brawl.stars.hypercharge.domain.entity.read
 
 import com.brawl.stars.hypercharge.domain.entity.BaseEntity
+import com.brawl.stars.hypercharge.domain.support.BrawlerType
 import jakarta.persistence.*
 import java.math.BigDecimal
 
@@ -35,4 +36,11 @@ class StatMapCombination(
     @Column(name = "win_rate", precision = 5, scale = 2, nullable = false)
     var winRate: BigDecimal = BigDecimal.ZERO
         protected set
+
+    fun getBrawlerDisplayNames(): List<Pair<String, String>> {
+        return brawlerIdList.split(":").map { id ->
+            val brawlerType = BrawlerType.fromId(id)
+            id to brawlerType.displayName
+        }
+    }
 }

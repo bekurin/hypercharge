@@ -1,6 +1,8 @@
 package com.brawl.stars.hypercharge.domain.support
 
 enum class BrawlerType(val displayName: String) {
+    UNSPECIFIED("Unknown"),
+
     // Starting Brawlers
     SHELLY("Shelly"),
 
@@ -102,8 +104,8 @@ enum class BrawlerType(val displayName: String) {
     ;
 
     companion object {
-        fun fromId(id: String): BrawlerType? = entries.find { it.name == id }
-
-        fun getDisplayName(id: String): String = fromId(id)?.displayName ?: id
+        fun fromId(id: String): BrawlerType {
+            return entries.find { it.name == id } ?: UNSPECIFIED
+        }
     }
 }
