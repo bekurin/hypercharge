@@ -4,6 +4,7 @@ import com.brawl.stars.hypercharge.batch.client.BrawlStarsApiClient
 import com.brawl.stars.hypercharge.batch.dto.BattleLogItem
 import com.brawl.stars.hypercharge.batch.dto.RankedPlayer
 import com.brawl.stars.hypercharge.batch.job.ProcessedBattleData
+import com.brawl.stars.hypercharge.domain.entity.read.GameMap
 import com.brawl.stars.hypercharge.domain.entity.write.BattleLog
 import com.brawl.stars.hypercharge.domain.entity.write.BattleParticipantDetail
 import org.slf4j.LoggerFactory
@@ -46,12 +47,15 @@ class BattleLogProcessor(
 
     private fun convertToBattleData(battleLogItem: BattleLogItem): ProcessedBattleData? {
         val battleTime = parseBattleTime(battleLogItem.battleTime) ?: return null
+        val mapId = battleLogItem.event.id ?: return null
+        val mapName = battleLogItem.event.map ?: return null
+        val mode = battleLogItem.event.mode ?: return null
 
         val battleLog =
             BattleLog(
                 battleTime = battleTime,
-                mapId = battleLogItem.event.id.toString(),
-                mode = battleLogItem.event.mode ?: return null,
+                mapId = mapId.toString(),
+                mode = mode,
                 starPlayerTag = battleLogItem.battle.starPlayer?.tag,
                 starPlayerBrawlerId =
                     battleLogItem.battle.starPlayer
@@ -60,9 +64,16 @@ class BattleLogProcessor(
                 duration = battleLogItem.battle.duration,
             )
 
+        val gameMap =
+            GameMap(
+                id = mapId,
+                name = mapName,
+                mode = mode,
+            )
+
         addParticipants(battleLog, battleLogItem)
 
-        return ProcessedBattleData(battleLog)
+        return ProcessedBattleData(battleLog, gameMap)
     }
 
     private fun parseBattleTime(battleTimeStr: String): LocalDateTime? {
