@@ -34,4 +34,6 @@ application-secret.yml
 .DS_Store
 Thumbs.db
 
+mysql-data/
+
 CLAUDE.md

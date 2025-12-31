@@ -6,9 +6,14 @@ spring:
       - domain
   batch:
     job:
-      enabled: false
+      enabled: true
     jdbc:
       initialize-schema: always
+
+brawlstars:
+  api:
+    base-url: https://api.brawlstars.com/v1
+    key: ${BRAWLSTARTS_API_KEY}
 
 logging:
   level:
