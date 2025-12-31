@@ -3,6 +3,8 @@ package com.brawl.stars.hypercharge.api.controller
 import com.brawl.stars.hypercharge.api.dto.response.ApiResponse
 import com.brawl.stars.hypercharge.api.dto.response.BrawlerStatDto
 import com.brawl.stars.hypercharge.api.dto.response.CombinationDto
+import com.brawl.stars.hypercharge.api.dto.response.MapDto
+import com.brawl.stars.hypercharge.api.dto.response.PageResponse
 import com.brawl.stars.hypercharge.api.service.MapStatService
 import com.brawl.stars.hypercharge.api.support.BrawlerSortType
 import org.springframework.http.ResponseEntity
@@ -17,6 +19,15 @@ import org.springframework.web.bind.annotation.RestController
 class MapController(
     private val mapStatService: MapStatService
 ) {
+
+    @GetMapping("/page/{page}")
+    fun getMaps(
+        @PathVariable page: Int,
+        @RequestParam(defaultValue = "20") size: Int
+    ): ResponseEntity<PageResponse<MapDto>> {
+        val response = mapStatService.getMaps(page, size)
+        return ResponseEntity.ok(response)
+    }
 
     @GetMapping("/{mapId}/combinations")
     fun getMapCombinations(
