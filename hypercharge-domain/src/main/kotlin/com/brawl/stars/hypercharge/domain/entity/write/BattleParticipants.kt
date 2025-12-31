@@ -4,7 +4,7 @@ import com.brawl.stars.hypercharge.domain.support.BrawlerCombinationHashGenerato
 
 class BattleParticipants(
     private val participants: List<BattleParticipantDetail>,
-    private val starPlayerBrawlerId: String?
+    private val starPlayerBrawlerId: String?,
 ) {
     companion object {
         private const val TEAM_SIZE = 3
@@ -18,7 +18,7 @@ class BattleParticipants(
                 mapId = mapId,
                 brawlerId = participant.brawlerId,
                 isWin = participant.isVictory,
-                isStarPlayer = participant.brawlerId == starPlayerBrawlerId
+                isStarPlayer = participant.brawlerId == starPlayerBrawlerId,
             )
         }
     }
@@ -42,7 +42,7 @@ class BattleParticipants(
 
     private fun createCombinationData(
         mapId: String,
-        team: List<BattleParticipantDetail>
+        team: List<BattleParticipantDetail>,
     ): TeamCombinationData {
         val brawlerIds = team.map { it.brawlerId }
         val hash = BrawlerCombinationHashGenerator.generate(brawlerIds)
@@ -54,12 +54,12 @@ class BattleParticipants(
         val mapId: String,
         val brawlerId: String,
         val isWin: Boolean,
-        val isStarPlayer: Boolean
+        val isStarPlayer: Boolean,
     )
 
     data class TeamCombinationData(
         val mapId: String,
         val brawlerIdList: String,
-        val isWin: Boolean
+        val isWin: Boolean,
     )
 }

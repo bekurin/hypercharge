@@ -10,10 +10,12 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional(readOnly = true)
 class MapListService(
-    private val gameMapRepository: GameMapRepository
+    private val gameMapRepository: GameMapRepository,
 ) {
-
-    fun getMaps(page: Int, size: Int): PageResponse<MapDto> {
+    fun getMaps(
+        page: Int,
+        size: Int,
+    ): PageResponse<MapDto> {
         val pageable = PageRequest.of(page, size)
         val mapPage = gameMapRepository.findAllByOrderByUpdatedAtDesc(pageable)
         return PageResponse(mapPage.map { MapDto(it) })

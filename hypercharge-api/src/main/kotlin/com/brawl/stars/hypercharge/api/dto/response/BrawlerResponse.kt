@@ -14,7 +14,7 @@ data class BrawlerStatDto(
     val totalPick: Long,
     val totalWin: Long,
     val tier: String,
-    val totalStarPlayer: Long
+    val totalStarPlayer: Long,
 ) {
     constructor(stats: BrawlerCalculatedStats) : this(
         brawlerId = stats.brawler.brawlerId,
@@ -25,6 +25,6 @@ data class BrawlerStatDto(
         totalPick = stats.brawler.totalPick,
         totalWin = stats.brawler.totalWin,
         tier = calculateBrawlerTier(stats.brawler.winRate).displayName,
-        totalStarPlayer = stats.brawler.totalStarPlayer
+        totalStarPlayer = stats.brawler.totalStarPlayer,
     )
 }

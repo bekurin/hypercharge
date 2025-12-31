@@ -14,18 +14,18 @@ import java.time.format.DateTimeFormatter
 
 @Component
 class BattleLogProcessor(
-    private val brawlStarsApiClient: BrawlStarsApiClient
+    private val brawlStarsApiClient: BrawlStarsApiClient,
 ) : ItemProcessor<RankedPlayer, List<ProcessedBattleData>> {
-
     private val log = LoggerFactory.getLogger(BattleLogProcessor::class.java)
     private val battleTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss.SSS'Z'")
 
     override fun process(player: RankedPlayer): List<ProcessedBattleData>? {
         return try {
             val battleLogResponse = brawlStarsApiClient.getBattleLogs(player.tag)
-            val processedData = battleLogResponse.items
-                .filter { isValidBattleLog(it) }
-                .mapNotNull { convertToBattleData(it) }
+            val processedData =
+                battleLogResponse.items
+                    .filter { isValidBattleLog(it) }
+                    .mapNotNull { convertToBattleData(it) }
 
             log.info("Processed ${processedData.size} battle logs for player: ${player.name}")
             processedData.ifEmpty { null }
@@ -37,24 +37,28 @@ class BattleLogProcessor(
 
     private fun isValidBattleLog(battleLogItem: BattleLogItem): Boolean {
         return battleLogItem.event.id != null &&
-                battleLogItem.event.map != null &&
-                battleLogItem.event.mode != null &&
-                battleLogItem.battle.teams != null &&
-                battleLogItem.battle.result != null &&
-                battleLogItem.battle.type == "ranked"
+            battleLogItem.event.map != null &&
+            battleLogItem.event.mode != null &&
+            battleLogItem.battle.teams != null &&
+            battleLogItem.battle.result != null &&
+            battleLogItem.battle.type == "ranked"
     }
 
     private fun convertToBattleData(battleLogItem: BattleLogItem): ProcessedBattleData? {
         val battleTime = parseBattleTime(battleLogItem.battleTime) ?: return null
 
-        val battleLog = BattleLog(
-            battleTime = battleTime,
-            mapId = battleLogItem.event.id.toString(),
-            mode = battleLogItem.event.mode ?: return null,
-            starPlayerTag = battleLogItem.battle.starPlayer?.tag,
-            starPlayerBrawlerId = battleLogItem.battle.starPlayer?.brawler?.name,
-            duration = battleLogItem.battle.duration
-        )
+        val battleLog =
+            BattleLog(
+                battleTime = battleTime,
+                mapId = battleLogItem.event.id.toString(),
+                mode = battleLogItem.event.mode ?: return null,
+                starPlayerTag = battleLogItem.battle.starPlayer?.tag,
+                starPlayerBrawlerId =
+                    battleLogItem.battle.starPlayer
+                        ?.brawler
+                        ?.name,
+                duration = battleLogItem.battle.duration,
+            )
 
         addParticipants(battleLog, battleLogItem)
 
@@ -70,25 +74,30 @@ class BattleLogProcessor(
         }
     }
 
-    private fun addParticipants(battleLog: BattleLog, battleLogItem: BattleLogItem) {
+    private fun addParticipants(
+        battleLog: BattleLog,
+        battleLogItem: BattleLogItem,
+    ) {
         val teams = battleLogItem.battle.teams ?: return
         val result = battleLogItem.battle.result ?: return
 
         teams.forEachIndexed { teamIndex, team ->
-            val isVictory = when {
-                result == "victory" && teamIndex == 0 -> true
-                result == "defeat" && teamIndex == 1 -> true
-                else -> false
-            }
+            val isVictory =
+                when {
+                    result == "victory" && teamIndex == 0 -> true
+                    result == "defeat" && teamIndex == 1 -> true
+                    else -> false
+                }
 
             team.forEach { player ->
-                val participant = BattleParticipantDetail(
-                    battleLog = battleLog,
-                    playerTag = player.tag,
-                    brawlerId = player.brawler.name,
-                    isVictory = isVictory,
-                    teamCode = teamIndex
-                )
+                val participant =
+                    BattleParticipantDetail(
+                        battleLog = battleLog,
+                        playerTag = player.tag,
+                        brawlerId = player.brawler.name,
+                        isVictory = isVictory,
+                        teamCode = teamIndex,
+                    )
                 battleLog.addParticipant(participant)
             }
         }

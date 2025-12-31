@@ -10,14 +10,13 @@ import java.time.Duration
 
 @Component
 class StepExecutionLoggingListener : StepExecutionListener {
-
     private val log = LoggerFactory.getLogger(StepExecutionLoggingListener::class.java)
 
     override fun beforeStep(stepExecution: StepExecution) {
         log.info(
             "Step [{}] started at {}",
             stepExecution.stepName,
-            stepExecution.startTime
+            stepExecution.startTime,
         )
     }
 
@@ -30,7 +29,7 @@ class StepExecutionLoggingListener : StepExecutionListener {
             stepExecution.readCount,
             stepExecution.writeCount,
             stepExecution.skipCount,
-            DurationFormatter.format(duration)
+            DurationFormatter.format(duration),
         )
         return stepExecution.exitStatus
     }

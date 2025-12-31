@@ -11,7 +11,7 @@ data class PageResponse<T : Any>(
     val hasPrevious: Boolean,
     val isFirst: Boolean,
     val isLast: Boolean,
-    val data: List<T>
+    val data: List<T>,
 ) {
     constructor(page: Page<T>) : this(
         totalCount = page.totalElements,
@@ -22,6 +22,6 @@ data class PageResponse<T : Any>(
         hasPrevious = page.hasPrevious(),
         isFirst = page.isFirst,
         isLast = page.isLast,
-        data = page.content
+        data = page.content,
     )
 }

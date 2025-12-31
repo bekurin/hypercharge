@@ -8,7 +8,6 @@ package com.brawl.stars.hypercharge.domain.support
  * 예시: ["SHELLY", "BULL", "COLT"] -> "BULL:COLT:SHELLY"
  */
 object BrawlerCombinationHashGenerator {
-
     private const val DELIMITER = ":"
     private const val TEAM_SIZE = 3
 

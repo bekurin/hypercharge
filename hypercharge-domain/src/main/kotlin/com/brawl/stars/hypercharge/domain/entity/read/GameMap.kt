@@ -11,9 +11,8 @@ import jakarta.persistence.Table
 class GameMap(
     id: Long,
     name: String,
-    mode: String
+    mode: String,
 ) : TimestampBaseEntity() {
-
     @Id
     @Column(name = "id")
     val id: Long = id

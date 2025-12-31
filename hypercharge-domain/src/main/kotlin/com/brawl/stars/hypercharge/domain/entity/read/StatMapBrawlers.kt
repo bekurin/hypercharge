@@ -3,8 +3,9 @@ package com.brawl.stars.hypercharge.domain.entity.read
 import java.math.BigDecimal
 import java.math.RoundingMode
 
-class StatMapBrawlers(private val values: List<StatMapBrawler>) {
-
+class StatMapBrawlers(
+    private val values: List<StatMapBrawler>,
+) {
     private val totalPicks: Long = values.sumOf { it.totalPick }
 
     fun calculateStats(): List<BrawlerCalculatedStats> {
@@ -12,7 +13,7 @@ class StatMapBrawlers(private val values: List<StatMapBrawler>) {
             BrawlerCalculatedStats(
                 brawler = brawler,
                 pickRate = calculatePickRate(brawler),
-                starRate = calculateStarRate(brawler)
+                starRate = calculateStarRate(brawler),
             )
         }
     }
@@ -35,5 +36,5 @@ class StatMapBrawlers(private val values: List<StatMapBrawler>) {
 data class BrawlerCalculatedStats(
     val brawler: StatMapBrawler,
     val pickRate: BigDecimal,
-    val starRate: BigDecimal
+    val starRate: BigDecimal,
 )

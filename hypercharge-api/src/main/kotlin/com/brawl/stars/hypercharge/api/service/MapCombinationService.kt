@@ -10,18 +10,18 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional(readOnly = true)
 class MapCombinationService(
-    private val statMapCombinationRepository: StatMapCombinationRepository
+    private val statMapCombinationRepository: StatMapCombinationRepository,
 ) {
-
     fun getMapCombinations(
         mapId: String,
         minGames: Int,
-        limit: Int
+        limit: Int,
     ): ApiResponse<CombinationDto> {
         val pageable = PageRequest.of(0, limit)
-        val combinations = statMapCombinationRepository
-            .findByMapIdAndTotalGameGreaterThanEqualOrderByWinRateDesc(mapId, minGames.toLong(), pageable)
-            .map { CombinationDto(it) }
+        val combinations =
+            statMapCombinationRepository
+                .findByMapIdAndTotalGameGreaterThanEqualOrderByWinRateDesc(mapId, minGames.toLong(), pageable)
+                .map { CombinationDto(it) }
         return ApiResponse(combinations)
     }
 }

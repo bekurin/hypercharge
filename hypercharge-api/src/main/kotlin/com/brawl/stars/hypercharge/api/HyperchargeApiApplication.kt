@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class HyperchargeApiApplication
 
 fun main(args: Array<String>) {
-	runApplication<HyperchargeApiApplication>(*args)
+    runApplication<HyperchargeApiApplication>(*args)
 }

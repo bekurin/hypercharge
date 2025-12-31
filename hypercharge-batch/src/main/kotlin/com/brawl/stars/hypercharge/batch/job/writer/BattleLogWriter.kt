@@ -9,27 +9,27 @@ import org.springframework.stereotype.Component
 
 @Component
 class BattleLogWriter(
-    private val battleLogRepository: BattleLogRepository
+    private val battleLogRepository: BattleLogRepository,
 ) : ItemWriter<List<ProcessedBattleData>> {
-
     private val log = LoggerFactory.getLogger(BattleLogWriter::class.java)
 
     override fun write(chunk: Chunk<out List<ProcessedBattleData>>) {
         val allBattleData = chunk.items.flatten()
         allBattleData.forEach { processedData ->
             val battleLog = processedData.battleLog
-            val exists = battleLogRepository.existsByBattleTimeAndStarPlayerTagAndMapId(
-                battleLog.battleTime,
-                battleLog.starPlayerTag,
-                battleLog.mapId
-            )
+            val exists =
+                battleLogRepository.existsByBattleTimeAndStarPlayerTagAndMapId(
+                    battleLog.battleTime,
+                    battleLog.starPlayerTag,
+                    battleLog.mapId,
+                )
 
             if (exists) {
                 log.debug(
                     "Duplicate battle log skipped: battleTime={}, mapId={}, starPlayerTag={}",
                     battleLog.battleTime,
                     battleLog.mapId,
-                    battleLog.starPlayerTag
+                    battleLog.starPlayerTag,
                 )
             } else {
                 battleLogRepository.save(battleLog)

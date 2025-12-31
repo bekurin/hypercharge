@@ -9,14 +9,13 @@ import java.time.Duration
 
 @Component
 class JobExecutionLoggingListener : JobExecutionListener {
-
     private val log = LoggerFactory.getLogger(JobExecutionLoggingListener::class.java)
 
     override fun beforeJob(jobExecution: JobExecution) {
         log.info(
             "Job [{}] started at {}",
             jobExecution.jobInstance.jobName,
-            jobExecution.startTime
+            jobExecution.startTime,
         )
     }
 
@@ -26,7 +25,7 @@ class JobExecutionLoggingListener : JobExecutionListener {
             "Job [{}] finished with status [{}] - elapsed time: {}",
             jobExecution.jobInstance.jobName,
             jobExecution.status,
-            DurationFormatter.format(duration)
+            DurationFormatter.format(duration),
         )
     }
 

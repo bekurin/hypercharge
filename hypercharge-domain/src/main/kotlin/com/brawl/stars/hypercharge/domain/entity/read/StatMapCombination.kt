@@ -9,14 +9,13 @@ import java.math.BigDecimal
 @Table(
     name = "stat_map_combination",
     indexes = [
-        Index(name = "idx_stat_map_combination_map_id", columnList = "map_id")
-    ]
+        Index(name = "idx_stat_map_combination_map_id", columnList = "map_id"),
+    ],
 )
 class StatMapCombination(
     mapId: String,
-    brawlerIdList: String
+    brawlerIdList: String,
 ) : BaseEntity() {
-
     @Column(name = "map_id", nullable = false)
     var mapId: String = mapId
         protected set
@@ -44,7 +43,10 @@ class StatMapCombination(
         }
     }
 
-    fun updateStats(totalGame: Long, totalWin: Long) {
+    fun updateStats(
+        totalGame: Long,
+        totalWin: Long,
+    ) {
         this.totalGame = totalGame
         this.totalWin = totalWin
         this.winRate = calculateWinRate()
@@ -56,7 +58,10 @@ class StatMapCombination(
         this.winRate = calculateWinRate()
     }
 
-    fun addBulkGames(games: Int, wins: Int) {
+    fun addBulkGames(
+        games: Int,
+        wins: Int,
+    ) {
         this.totalGame += games
         this.totalWin += wins
         this.winRate = calculateWinRate()

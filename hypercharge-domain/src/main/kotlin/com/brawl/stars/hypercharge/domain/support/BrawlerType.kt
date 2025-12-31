@@ -1,6 +1,8 @@
 package com.brawl.stars.hypercharge.domain.support
 
-enum class BrawlerType(val displayName: String) {
+enum class BrawlerType(
+    val displayName: String,
+) {
     UNSPECIFIED("Unknown"),
 
     // Starting Brawlers

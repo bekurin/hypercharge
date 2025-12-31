@@ -10,9 +10,9 @@ import java.time.LocalDateTime
     uniqueConstraints = [
         UniqueConstraint(
             name = "uk_battle_log_time_star_player_map",
-            columnNames = ["battle_time", "star_player_tag", "map_id"]
-        )
-    ]
+            columnNames = ["battle_time", "star_player_tag", "map_id"],
+        ),
+    ],
 )
 class BattleLog(
     battleTime: LocalDateTime,
@@ -20,9 +20,8 @@ class BattleLog(
     mode: String,
     starPlayerTag: String? = null,
     starPlayerBrawlerId: String? = null,
-    duration: Int? = null
+    duration: Int? = null,
 ) : BaseEntity() {
-
     @Column(name = "battle_time", nullable = false)
     var battleTime: LocalDateTime = battleTime
         protected set
