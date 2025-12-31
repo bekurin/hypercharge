@@ -35,7 +35,7 @@ class StatAggregationJobConfiguration(
     private val combinationStatsProcessor: CombinationStatsProcessor,
     private val combinationStatsWriter: CombinationStatsWriter,
     private val jobExecutionLoggingListener: JobExecutionLoggingListener,
-    private val stepExecutionLoggingListener: StepExecutionLoggingListener
+    private val stepExecutionLoggingListener: StepExecutionLoggingListener,
 ) {
     companion object {
         private const val ROLLING_WINDOW_DAYS = 30L

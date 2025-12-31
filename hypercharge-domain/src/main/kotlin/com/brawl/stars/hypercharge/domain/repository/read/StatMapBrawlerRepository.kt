@@ -4,10 +4,12 @@ import com.brawl.stars.hypercharge.domain.entity.read.StatMapBrawler
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface StatMapBrawlerRepository : JpaRepository<StatMapBrawler, Long> {
-
     fun findByMapId(mapId: String): List<StatMapBrawler>
 
-    fun findByMapIdAndBrawlerId(mapId: String, brawlerId: String): StatMapBrawler?
+    fun findByMapIdAndBrawlerId(
+        mapId: String,
+        brawlerId: String,
+    ): StatMapBrawler?
 
     fun findByMapIdIn(mapIds: Set<String>): List<StatMapBrawler>
 }

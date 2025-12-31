@@ -3,5 +3,5 @@ package com.brawl.stars.hypercharge.batch.job
 import com.brawl.stars.hypercharge.domain.entity.write.BattleLog
 
 data class ProcessedBattleData(
-    val battleLog: BattleLog
+    val battleLog: BattleLog,
 )

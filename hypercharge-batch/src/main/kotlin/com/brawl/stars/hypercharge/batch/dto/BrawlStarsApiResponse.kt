@@ -1,30 +1,30 @@
 package com.brawl.stars.hypercharge.batch.dto
 
 data class RankingResponse(
-    val items: List<RankedPlayer>
+    val items: List<RankedPlayer>,
 )
 
 data class RankedPlayer(
     val tag: String,
     val name: String,
     val trophies: Int,
-    val rank: Int
+    val rank: Int,
 )
 
 data class BattleLogResponse(
-    val items: List<BattleLogItem>
+    val items: List<BattleLogItem>,
 )
 
 data class BattleLogItem(
     val battleTime: String,
     val event: BattleEvent,
-    val battle: Battle
+    val battle: Battle,
 )
 
 data class BattleEvent(
     val id: Long?,
     val mode: String?,
-    val map: String?
+    val map: String?,
 )
 
 data class Battle(
@@ -33,18 +33,18 @@ data class Battle(
     val result: String?,
     val duration: Int?,
     val starPlayer: BattlePlayer?,
-    val teams: List<List<BattlePlayer>>?
+    val teams: List<List<BattlePlayer>>?,
 )
 
 data class BattlePlayer(
     val tag: String,
     val name: String,
-    val brawler: Brawler
+    val brawler: Brawler,
 )
 
 data class Brawler(
     val id: Long,
     val name: String,
     val power: Int?,
-    val trophies: Int?
+    val trophies: Int?,
 )

@@ -8,15 +8,17 @@ import org.springframework.data.jpa.repository.JpaRepository
 import java.time.LocalDateTime
 
 interface BattleLogRepository : JpaRepository<BattleLog, Long> {
-
     fun existsByBattleTimeAndStarPlayerTagAndMapId(
         battleTime: LocalDateTime,
         starPlayerTag: String?,
-        mapId: String
+        mapId: String,
     ): Boolean
 
     fun findByBattleTimeBefore(cutoffDate: LocalDateTime): List<BattleLog>
 
     @EntityGraph(attributePaths = ["participants"])
-    fun findByBattleTimeGreaterThanEqual(since: LocalDateTime, pageable: Pageable): Page<BattleLog>
+    fun findByBattleTimeGreaterThanEqual(
+        since: LocalDateTime,
+        pageable: Pageable,
+    ): Page<BattleLog>
 }

@@ -6,6 +6,5 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface GameMapRepository : JpaRepository<GameMap, Long> {
-
     fun findAllByOrderByUpdatedAtDesc(pageable: Pageable): Page<GameMap>
 }

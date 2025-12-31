@@ -3,7 +3,6 @@ package com.brawl.stars.hypercharge.batch.util
 import java.time.Duration
 
 object DurationFormatter {
-
     fun format(duration: Duration): String {
         val hours = duration.toHours()
         val minutes = duration.toMinutesPart()

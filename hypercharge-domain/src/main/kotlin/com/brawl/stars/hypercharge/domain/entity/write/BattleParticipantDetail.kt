@@ -10,9 +10,8 @@ class BattleParticipantDetail(
     playerTag: String,
     brawlerId: String,
     isVictory: Boolean,
-    teamCode: Int
+    teamCode: Int,
 ) : BaseEntity() {
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "battle_log_id", nullable = false)
     var battleLog: BattleLog = battleLog

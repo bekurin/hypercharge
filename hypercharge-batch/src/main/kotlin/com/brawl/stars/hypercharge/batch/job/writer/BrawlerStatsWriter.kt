@@ -10,9 +10,8 @@ import org.springframework.stereotype.Component
 
 @Component
 class BrawlerStatsWriter(
-    private val statMapBrawlerRepository: StatMapBrawlerRepository
+    private val statMapBrawlerRepository: StatMapBrawlerRepository,
 ) : ItemWriter<List<BattleParticipants.BrawlerStatData>> {
-
     private val log = LoggerFactory.getLogger(BrawlerStatsWriter::class.java)
 
     override fun write(chunk: Chunk<out List<BattleParticipants.BrawlerStatData>>) {
@@ -20,8 +19,10 @@ class BrawlerStatsWriter(
         if (aggregatedStats.isEmpty()) return
 
         val mapIds = aggregatedStats.keys.map { it.first }.toSet()
-        val existingEntities = statMapBrawlerRepository.findByMapIdIn(mapIds)
-            .associateBy { it.mapId to it.brawlerId }
+        val existingEntities =
+            statMapBrawlerRepository
+                .findByMapIdIn(mapIds)
+                .associateBy { it.mapId to it.brawlerId }
 
         val entitiesToSave = mutableListOf<StatMapBrawler>()
 
@@ -33,8 +34,9 @@ class BrawlerStatsWriter(
                 existing.addBulkPicks(stats.picks, stats.wins, stats.starPlayers)
                 entitiesToSave.add(existing)
             } else {
-                val newEntity = StatMapBrawler(mapId = mapId, brawlerId = brawlerId)
-                    .apply { addBulkPicks(stats.picks, stats.wins, stats.starPlayers) }
+                val newEntity =
+                    StatMapBrawler(mapId = mapId, brawlerId = brawlerId)
+                        .apply { addBulkPicks(stats.picks, stats.wins, stats.starPlayers) }
                 entitiesToSave.add(newEntity)
             }
         }
@@ -43,9 +45,7 @@ class BrawlerStatsWriter(
         log.debug("Brawler stats - saved {} entities", entitiesToSave.size)
     }
 
-    private fun aggregateChunkData(
-        chunk: Chunk<out List<BattleParticipants.BrawlerStatData>>
-    ): Map<Pair<String, String>, AggregatedBrawlerStats> {
+    private fun aggregateChunkData(chunk: Chunk<out List<BattleParticipants.BrawlerStatData>>): Map<Pair<String, String>, AggregatedBrawlerStats> {
         val result = mutableMapOf<Pair<String, String>, AggregatedBrawlerStats>()
 
         chunk.items.flatten().forEach { data ->
@@ -62,6 +62,6 @@ class BrawlerStatsWriter(
     private class AggregatedBrawlerStats(
         var picks: Int = 0,
         var wins: Int = 0,
-        var starPlayers: Int = 0
+        var starPlayers: Int = 0,
     )
 }

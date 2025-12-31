@@ -11,21 +11,21 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional(readOnly = true)
 class MapBrawlerService(
-    private val statMapBrawlerRepository: StatMapBrawlerRepository
+    private val statMapBrawlerRepository: StatMapBrawlerRepository,
 ) {
-
     fun getMapBrawlers(
         mapId: String,
-        sort: BrawlerSortType
+        sort: BrawlerSortType,
     ): ApiResponse<BrawlerStatDto> {
         val brawlers = StatMapBrawlers(statMapBrawlerRepository.findByMapId(mapId))
         val brawlerStats = brawlers.calculateStats().map { BrawlerStatDto(it) }
 
-        val sortedStats = when (sort) {
-            BrawlerSortType.WIN_RATE -> brawlerStats.sortedByDescending { it.winRate }
-            BrawlerSortType.PICK_RATE -> brawlerStats.sortedByDescending { it.pickRate }
-            BrawlerSortType.STAR_RATE -> brawlerStats.sortedByDescending { it.starRate }
-        }
+        val sortedStats =
+            when (sort) {
+                BrawlerSortType.WIN_RATE -> brawlerStats.sortedByDescending { it.winRate }
+                BrawlerSortType.PICK_RATE -> brawlerStats.sortedByDescending { it.pickRate }
+                BrawlerSortType.STAR_RATE -> brawlerStats.sortedByDescending { it.starRate }
+            }
 
         return ApiResponse(sortedStats)
     }

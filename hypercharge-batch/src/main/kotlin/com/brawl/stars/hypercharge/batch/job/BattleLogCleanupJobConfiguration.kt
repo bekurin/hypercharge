@@ -25,7 +25,7 @@ class BattleLogCleanupJobConfiguration(
     private val transactionManager: PlatformTransactionManager,
     private val battleLogRepository: BattleLogRepository,
     private val jobExecutionLoggingListener: JobExecutionLoggingListener,
-    private val stepExecutionLoggingListener: StepExecutionLoggingListener
+    private val stepExecutionLoggingListener: StepExecutionLoggingListener,
 ) {
     private val log = LoggerFactory.getLogger(BattleLogCleanupJobConfiguration::class.java)
 

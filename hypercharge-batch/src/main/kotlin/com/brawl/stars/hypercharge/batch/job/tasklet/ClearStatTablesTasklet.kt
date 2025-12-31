@@ -12,12 +12,14 @@ import org.springframework.stereotype.Component
 @Component
 class ClearStatTablesTasklet(
     private val statMapBrawlerRepository: StatMapBrawlerRepository,
-    private val statMapCombinationRepository: StatMapCombinationRepository
+    private val statMapCombinationRepository: StatMapCombinationRepository,
 ) : Tasklet {
-
     private val log = LoggerFactory.getLogger(ClearStatTablesTasklet::class.java)
 
-    override fun execute(contribution: StepContribution, chunkContext: ChunkContext): RepeatStatus {
+    override fun execute(
+        contribution: StepContribution,
+        chunkContext: ChunkContext,
+    ): RepeatStatus {
         statMapBrawlerRepository.deleteAll()
         log.info("Cleared stat_map_brawler table")
 

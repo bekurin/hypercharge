@@ -7,12 +7,12 @@ data class MapDto(
     val mapId: Long,
     val mapName: String,
     val mode: String,
-    val lastUpdatedAt: LocalDateTime
+    val lastUpdatedAt: LocalDateTime,
 ) {
     constructor(entity: GameMap) : this(
         mapId = entity.id,
         mapName = entity.name,
         mode = entity.mode,
-        lastUpdatedAt = entity.updatedAt
+        lastUpdatedAt = entity.updatedAt,
     )
 }

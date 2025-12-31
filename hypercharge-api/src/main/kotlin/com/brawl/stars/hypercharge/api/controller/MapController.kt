@@ -17,13 +17,12 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v1/maps")
 class MapController(
-    private val mapStatService: MapStatService
+    private val mapStatService: MapStatService,
 ) {
-
     @GetMapping("/page/{page}")
     fun getMaps(
         @PathVariable page: Int,
-        @RequestParam(defaultValue = "20") size: Int
+        @RequestParam(defaultValue = "20") size: Int,
     ): ResponseEntity<PageResponse<MapDto>> {
         val response = mapStatService.getMaps(page, size)
         return ResponseEntity.ok(response)
@@ -33,7 +32,7 @@ class MapController(
     fun getMapCombinations(
         @PathVariable mapId: String,
         @RequestParam(defaultValue = "10") minGames: Int,
-        @RequestParam(defaultValue = "20") limit: Int
+        @RequestParam(defaultValue = "20") limit: Int,
     ): ResponseEntity<ApiResponse<CombinationDto>> {
         val response = mapStatService.getMapCombinations(mapId, minGames, limit)
         return ResponseEntity.ok(response)
@@ -42,7 +41,7 @@ class MapController(
     @GetMapping("/{mapId}/brawlers")
     fun getMapBrawlers(
         @PathVariable mapId: String,
-        @RequestParam(defaultValue = "WIN_RATE") sort: BrawlerSortType
+        @RequestParam(defaultValue = "WIN_RATE") sort: BrawlerSortType,
     ): ResponseEntity<ApiResponse<BrawlerStatDto>> {
         val response = mapStatService.getMapBrawlers(mapId, sort)
         return ResponseEntity.ok(response)

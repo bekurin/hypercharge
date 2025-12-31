@@ -8,18 +8,18 @@ data class CombinationDto(
     val brawlers: List<BrawlerDto>,
     val winRate: BigDecimal,
     val totalGame: Long,
-    val totalWin: Long
+    val totalWin: Long,
 ) {
     constructor(entity: StatMapCombination) : this(
         combinationHash = entity.brawlerIdList,
         brawlers = entity.getBrawlerDisplayNames().map { (id, name) -> BrawlerDto(id, name) },
         winRate = entity.winRate,
         totalGame = entity.totalGame,
-        totalWin = entity.totalWin
+        totalWin = entity.totalWin,
     )
 }
 
 data class BrawlerDto(
     val id: String,
-    val name: String
+    val name: String,
 )

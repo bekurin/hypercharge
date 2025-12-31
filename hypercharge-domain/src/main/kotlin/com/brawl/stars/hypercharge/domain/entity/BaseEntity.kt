@@ -7,7 +7,6 @@ import jakarta.persistence.MappedSuperclass
 
 @MappedSuperclass
 abstract class BaseEntity : TimestampBaseEntity() {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0

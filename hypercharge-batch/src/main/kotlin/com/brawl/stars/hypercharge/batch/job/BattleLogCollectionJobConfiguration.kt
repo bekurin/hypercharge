@@ -26,9 +26,8 @@ class BattleLogCollectionJobConfiguration(
     private val battleLogProcessor: BattleLogProcessor,
     private val battleLogWriter: BattleLogWriter,
     private val jobExecutionLoggingListener: JobExecutionLoggingListener,
-    private val stepExecutionLoggingListener: StepExecutionLoggingListener
+    private val stepExecutionLoggingListener: StepExecutionLoggingListener,
 ) {
-
     @Bean
     fun battleLogCollectionJob(): Job {
         return JobBuilder("battleLogCollectionJob", jobRepository)

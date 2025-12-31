@@ -13,16 +13,17 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory
 @Configuration
 @EnableConfigurationProperties(BrawlStarsApiProperties::class)
 class BrawlStarsApiConfiguration(
-    private val properties: BrawlStarsApiProperties
+    private val properties: BrawlStarsApiProperties,
 ) {
-
     @Bean
     fun brawlStarsApiClient(): BrawlStarsApiClient {
-        val restClient = RestClient.builder()
-            .baseUrl(properties.baseUrl)
-            .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer ${properties.key}")
-            .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
-            .build()
+        val restClient =
+            RestClient
+                .builder()
+                .baseUrl(properties.baseUrl)
+                .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer ${properties.key}")
+                .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+                .build()
 
         val adapter = RestClientAdapter.create(restClient)
         val factory = HttpServiceProxyFactory.builderFor(adapter).build()

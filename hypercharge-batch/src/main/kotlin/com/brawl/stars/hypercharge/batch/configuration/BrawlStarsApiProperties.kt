@@ -5,5 +5,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 @ConfigurationProperties(prefix = "brawlstars.api")
 data class BrawlStarsApiProperties(
     val baseUrl: String,
-    val key: String
+    val key: String,
 )
