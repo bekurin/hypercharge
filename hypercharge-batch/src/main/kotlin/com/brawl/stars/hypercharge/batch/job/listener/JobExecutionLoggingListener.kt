@@ -1,14 +1,18 @@
 package com.brawl.stars.hypercharge.batch.job.listener
 
+import com.brawl.stars.hypercharge.batch.service.TelegramNotificationService
 import com.brawl.stars.hypercharge.batch.util.DurationFormatter
 import org.slf4j.LoggerFactory
+import org.springframework.batch.core.BatchStatus
 import org.springframework.batch.core.job.JobExecution
 import org.springframework.batch.core.listener.JobExecutionListener
 import org.springframework.stereotype.Component
 import java.time.Duration
 
 @Component
-class JobExecutionLoggingListener : JobExecutionListener {
+class JobExecutionLoggingListener(
+    private val telegramNotificationService: TelegramNotificationService,
+) : JobExecutionListener {
     private val log = LoggerFactory.getLogger(JobExecutionLoggingListener::class.java)
 
     override fun beforeJob(jobExecution: JobExecution) {
@@ -27,6 +31,10 @@ class JobExecutionLoggingListener : JobExecutionListener {
             jobExecution.status,
             DurationFormatter.format(duration),
         )
+
+        if (jobExecution.status == BatchStatus.FAILED) {
+            telegramNotificationService.sendJobFailureNotification(jobExecution)
+        }
     }
 
     private fun calculateDuration(jobExecution: JobExecution): Duration {
