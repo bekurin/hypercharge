@@ -2,7 +2,6 @@ package com.brawl.stars.hypercharge.api.service
 
 import com.brawl.stars.hypercharge.api.dto.response.ApiResponse
 import com.brawl.stars.hypercharge.api.dto.response.CombinationDto
-import com.brawl.stars.hypercharge.api.dto.response.MapCombinationResponse
 import com.brawl.stars.hypercharge.domain.repository.read.StatMapCombinationRepository
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
