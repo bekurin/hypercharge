@@ -40,4 +40,33 @@ class StatMapBrawler(
     @Column(name = "win_rate", precision = 5, scale = 2, nullable = false)
     var winRate: BigDecimal = BigDecimal.ZERO
         protected set
+
+    fun updateStats(totalPick: Long, totalWin: Long, totalStarPlayer: Long) {
+        this.totalPick = totalPick
+        this.totalWin = totalWin
+        this.totalStarPlayer = totalStarPlayer
+        this.winRate = calculateWinRate()
+    }
+
+    fun addPick(isWin: Boolean, isStarPlayer: Boolean) {
+        this.totalPick++
+        if (isWin) this.totalWin++
+        if (isStarPlayer) this.totalStarPlayer++
+        this.winRate = calculateWinRate()
+    }
+
+    fun addBulkPicks(picks: Int, wins: Int, starPlayers: Int) {
+        this.totalPick += picks
+        this.totalWin += wins
+        this.totalStarPlayer += starPlayers
+        this.winRate = calculateWinRate()
+    }
+
+    private fun calculateWinRate(): BigDecimal {
+        return if (totalPick > 0) {
+            BigDecimal(totalWin * 100).divide(BigDecimal(totalPick), 2, java.math.RoundingMode.HALF_UP)
+        } else {
+            BigDecimal.ZERO
+        }
+    }
 }

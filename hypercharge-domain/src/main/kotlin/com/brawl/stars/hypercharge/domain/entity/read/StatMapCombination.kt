@@ -43,4 +43,30 @@ class StatMapCombination(
             id to brawlerType.displayName
         }
     }
+
+    fun updateStats(totalGame: Long, totalWin: Long) {
+        this.totalGame = totalGame
+        this.totalWin = totalWin
+        this.winRate = calculateWinRate()
+    }
+
+    fun addGame(isWin: Boolean) {
+        this.totalGame++
+        if (isWin) this.totalWin++
+        this.winRate = calculateWinRate()
+    }
+
+    fun addBulkGames(games: Int, wins: Int) {
+        this.totalGame += games
+        this.totalWin += wins
+        this.winRate = calculateWinRate()
+    }
+
+    private fun calculateWinRate(): BigDecimal {
+        return if (totalGame > 0) {
+            BigDecimal(totalWin * 100).divide(BigDecimal(totalGame), 2, java.math.RoundingMode.HALF_UP)
+        } else {
+            BigDecimal.ZERO
+        }
+    }
 }
