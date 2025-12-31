@@ -13,5 +13,7 @@ tasks.getByName<Jar>("jar") {
 dependencies {
 	implementation(project(":hypercharge-domain"))
 	implementation("org.springframework.boot:spring-boot-starter-batch")
+	implementation("org.springframework:spring-web")
+	implementation("org.springframework.boot:spring-boot-starter-json")
 	runtimeOnly("com.mysql:mysql-connector-j")
 }
