@@ -3,7 +3,6 @@ package com.brawl.stars.hypercharge.batch.job
 import com.brawl.stars.hypercharge.batch.job.listener.JobExecutionLoggingListener
 import com.brawl.stars.hypercharge.batch.job.listener.StepExecutionLoggingListener
 import com.brawl.stars.hypercharge.domain.repository.write.BattleLogRepository
-import com.brawl.stars.hypercharge.domain.repository.write.BattleParticipantDetailRepository
 import org.slf4j.LoggerFactory
 import org.springframework.batch.core.job.Job
 import org.springframework.batch.core.job.builder.JobBuilder
@@ -25,7 +24,6 @@ class BattleLogCleanupJobConfiguration(
     private val jobRepository: JobRepository,
     private val transactionManager: PlatformTransactionManager,
     private val battleLogRepository: BattleLogRepository,
-    private val battleParticipantDetailRepository: BattleParticipantDetailRepository,
     private val jobExecutionLoggingListener: JobExecutionLoggingListener,
     private val stepExecutionLoggingListener: StepExecutionLoggingListener
 ) {
@@ -40,16 +38,7 @@ class BattleLogCleanupJobConfiguration(
         return JobBuilder("battleLogCleanupJob", jobRepository)
             .incrementer(RunIdIncrementer())
             .listener(jobExecutionLoggingListener)
-            .start(deleteParticipantDetailsStep())
-            .next(deleteBattleLogsStep())
-            .build()
-    }
-
-    @Bean
-    fun deleteParticipantDetailsStep(): Step {
-        return StepBuilder(jobRepository)
-            .tasklet(deleteParticipantDetailsTasklet(), transactionManager)
-            .listener(stepExecutionLoggingListener)
+            .start(deleteBattleLogsStep())
             .build()
     }
 
@@ -62,24 +51,20 @@ class BattleLogCleanupJobConfiguration(
     }
 
     @Bean
-    fun deleteParticipantDetailsTasklet(): Tasklet {
-        return Tasklet { _: StepContribution, _: ChunkContext ->
-            val cutoffDate = LocalDateTime.now().minusYears(RETENTION_YEARS)
-            val deletedCount = battleParticipantDetailRepository.deleteByBattleLogBattleTimeBefore(cutoffDate)
-            log.info("Deleted {} participant details older than {}", deletedCount, cutoffDate)
-            RepeatStatus.FINISHED
-        }
-    }
-
-    @Bean
     fun deleteBattleLogsTasklet(): Tasklet {
         return Tasklet { _: StepContribution, _: ChunkContext ->
             val cutoffDate = LocalDateTime.now().minusYears(RETENTION_YEARS)
-            val targetCount = battleLogRepository.countByBattleTimeBefore(cutoffDate)
-            log.info("Found {} battle logs older than {} to delete", targetCount, cutoffDate)
+            val oldBattleLogs = battleLogRepository.findByBattleTimeBefore(cutoffDate)
 
-            val deletedCount = battleLogRepository.deleteByBattleTimeBefore(cutoffDate)
-            log.info("Deleted {} battle logs older than {}", deletedCount, cutoffDate)
+            if (oldBattleLogs.isEmpty()) {
+                log.info("No battle logs older than {} to delete", cutoffDate)
+                return@Tasklet RepeatStatus.FINISHED
+            }
+
+            log.info("Found {} battle logs older than {} to delete", oldBattleLogs.size, cutoffDate)
+            battleLogRepository.deleteAll(oldBattleLogs)
+            log.info("Deleted {} battle logs and their participants (via cascade)", oldBattleLogs.size)
+
             RepeatStatus.FINISHED
         }
     }
