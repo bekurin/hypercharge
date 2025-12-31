@@ -11,4 +11,6 @@ interface BattleLogRepository : JpaRepository<BattleLog, Long> {
         starPlayerTag: String?,
         mapId: String
     ): Boolean
+
+    fun findByBattleTimeBefore(cutoffDate: LocalDateTime): List<BattleLog>
 }
