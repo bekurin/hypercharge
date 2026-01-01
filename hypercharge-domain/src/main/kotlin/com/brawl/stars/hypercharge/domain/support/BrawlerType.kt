@@ -103,11 +103,21 @@ enum class BrawlerType(
     KIT("Kit"),
     DRACO("Draco"),
     KENJI("Kenji"),
+
+    KAZE("Kaje"),
+    ZIGGY("Ziggy"),
+    FINX("Finx"),
+    LUMI("Lumi"),
+    PIERCE("Pierce"),
+    GUS("Gus"),
+    MINA("Mina"),
+    JAE_YONG("Jae-Yong"),
+    MEEPLE("Meeple"),
     ;
 
     companion object {
         fun fromId(id: String): BrawlerType {
-            return entries.find { it.name == id } ?: UNSPECIFIED
+            return entries.find { it.name == id } ?: entries.find { it.displayName.equals(id, ignoreCase = true) } ?: UNSPECIFIED
         }
     }
 }
