@@ -6,25 +6,25 @@ enum class BrawlerTier(
     val displayName: String,
     private val description: String,
 ) {
-    OP("OP", "승률 60% 초과"),
-    TIER_1("1T", "승률 55% ~ 60%"),
-    TIER_2("2T", "승률 50% ~ 55%"),
-    TIER_3("3T", "승률 45% ~ 50%"),
-    TIER_4("4T", "승률 45% 미만"),
+    OP("OP", "BIS 점수 50점 이상"),
+    TIER_1("1T", "BIS 점수 45 ~ 50점"),
+    TIER_2("2T", "BIS 점수 40 ~ 45점"),
+    TIER_3("3T", "BIS 점수 35 ~ 40점"),
+    TIER_4("4T", "BIS 점수 35점 미만"),
     ;
 
     companion object {
-        private val OP_THRESHOLD = BigDecimal("60.00")
-        private val TIER_1_THRESHOLD = BigDecimal("55.00")
-        private val TIER_2_THRESHOLD = BigDecimal("50.00")
-        private val TIER_3_THRESHOLD = BigDecimal("45.00")
+        private val OP_BIS_THRESHOLD = BigDecimal("50.00")
+        private val TIER_1_BIS_THRESHOLD = BigDecimal("45.00")
+        private val TIER_2_BIS_THRESHOLD = BigDecimal("40.00")
+        private val TIER_3_BIS_THRESHOLD = BigDecimal("35.00")
 
-        fun calculateBrawlerTier(winRate: BigDecimal): BrawlerTier =
+        fun calculateBrawlerTier(bisScore: BigDecimal): BrawlerTier =
             when {
-                winRate > OP_THRESHOLD -> OP
-                winRate > TIER_1_THRESHOLD -> TIER_1
-                winRate > TIER_2_THRESHOLD -> TIER_2
-                winRate > TIER_3_THRESHOLD -> TIER_3
+                bisScore >= OP_BIS_THRESHOLD -> OP
+                bisScore >= TIER_1_BIS_THRESHOLD -> TIER_1
+                bisScore >= TIER_2_BIS_THRESHOLD -> TIER_2
+                bisScore >= TIER_3_BIS_THRESHOLD -> TIER_3
                 else -> TIER_4
             }
     }

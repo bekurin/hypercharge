@@ -4,6 +4,7 @@ import com.brawl.stars.hypercharge.batch.job.listener.JobExecutionLoggingListene
 import com.brawl.stars.hypercharge.batch.job.listener.StepExecutionLoggingListener
 import com.brawl.stars.hypercharge.batch.job.processor.BrawlerStatsProcessor
 import com.brawl.stars.hypercharge.batch.job.processor.CombinationStatsProcessor
+import com.brawl.stars.hypercharge.batch.job.tasklet.BisScoreCalculationTasklet
 import com.brawl.stars.hypercharge.batch.job.tasklet.ClearStatTablesTasklet
 import com.brawl.stars.hypercharge.batch.job.writer.BrawlerStatsWriter
 import com.brawl.stars.hypercharge.batch.job.writer.CombinationStatsWriter
@@ -30,6 +31,7 @@ class StatAggregationJobConfiguration(
     private val transactionManager: PlatformTransactionManager,
     private val battleLogRepository: BattleLogRepository,
     private val clearStatTablesTasklet: ClearStatTablesTasklet,
+    private val bisScoreCalculationTasklet: BisScoreCalculationTasklet,
     private val brawlerStatsProcessor: BrawlerStatsProcessor,
     private val brawlerStatsWriter: BrawlerStatsWriter,
     private val combinationStatsProcessor: CombinationStatsProcessor,
@@ -49,6 +51,7 @@ class StatAggregationJobConfiguration(
             .listener(jobExecutionLoggingListener)
             .start(clearStatTablesStep())
             .next(aggregateBrawlerStatsStep())
+            .next(calculateBisScoreStep())
             .next(aggregateCombinationStatsStep())
             .build()
     }
@@ -57,6 +60,14 @@ class StatAggregationJobConfiguration(
     fun clearStatTablesStep(): Step {
         return StepBuilder(jobRepository)
             .tasklet(clearStatTablesTasklet, transactionManager)
+            .listener(stepExecutionLoggingListener)
+            .build()
+    }
+
+    @Bean
+    fun calculateBisScoreStep(): Step {
+        return StepBuilder(jobRepository)
+            .tasklet(bisScoreCalculationTasklet, transactionManager)
             .listener(stepExecutionLoggingListener)
             .build()
     }

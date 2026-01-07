@@ -2,7 +2,10 @@ package com.brawl.stars.hypercharge.domain.entity.read
 
 import com.brawl.stars.hypercharge.domain.entity.BaseEntity
 import com.brawl.stars.hypercharge.domain.support.BrawlerType
-import jakarta.persistence.*
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.Index
+import jakarta.persistence.Table
 import java.math.BigDecimal
 
 @Entity
@@ -41,21 +44,6 @@ class StatMapCombination(
             val brawlerType = BrawlerType.fromId(id)
             id to brawlerType.displayName
         }
-    }
-
-    fun updateStats(
-        totalGame: Long,
-        totalWin: Long,
-    ) {
-        this.totalGame = totalGame
-        this.totalWin = totalWin
-        this.winRate = calculateWinRate()
-    }
-
-    fun addGame(isWin: Boolean) {
-        this.totalGame++
-        if (isWin) this.totalWin++
-        this.winRate = calculateWinRate()
     }
 
     fun addBulkGames(
